@@ -1,26 +1,33 @@
-import { ChefHat } from 'lucide-react'
-import type { ReactNode } from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
-interface ChessyBubbleProps {
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant
   children: ReactNode
 }
 
-/**
- * Renders a message in Chessy's voice. Used for confirmations,
- * empty states, alerts, and the daily digest greeting.
- */
-export function ChessyBubble({ children }: ChessyBubbleProps) {
+const variantClasses: Record<ButtonVariant, string> = {
+  primary: 'bg-enamel text-white hover:bg-enamel-light',
+  secondary: 'bg-pesto text-white hover:opacity-90',
+  ghost: 'bg-transparent text-enamel border border-enamel hover:bg-card',
+  danger: 'bg-tomato text-white hover:opacity-90',
+}
+
+export function Button({ variant = 'primary', className = '', children, ...props }: ButtonProps) {
   return (
-    <div className="flex items-start gap-3">
-      <div
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-enamel"
-        aria-hidden="true"
-      >
-        <ChefHat size={18} className="text-white" />
-      </div>
-      <div className="max-w-md rounded-lg rounded-tl-none bg-card px-4 py-3 text-sm font-body text-ink">
-        {children}
-      </div>
-    </div>
+    <button
+      className={[
+        'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2',
+        'text-sm font-bold font-body transition-colors',
+        'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-enamel',
+        'disabled:opacity-50 disabled:cursor-not-allowed',
+        variantClasses[variant],
+        className,
+      ].join(' ')}
+      {...props}
+    >
+      {children}
+    </button>
   )
 }
