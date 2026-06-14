@@ -72,7 +72,13 @@ named differently.
 ## Environment variables
 
 Copy `.env.example` to `.env.local` and fill in the Firebase project config
-once it exists (Phase 1). `.env.local` is gitignored.
+(project: `chessy-69a60`). `.env.local` is gitignored and never committed.
+
+## Data layer
+
+`src/lib/firebase.ts` initializes the Firebase app and exports `db` (a
+Firestore instance) from env vars. Nothing imports it yet — Phase 1 will add
+the Recipe Box repository on top of it, plus Firestore security rules.
 
 ## Roadmap
 
