@@ -69,9 +69,24 @@ export function subscribeToRecipe(
   )
 }
 
+/**
+ * Firestore rejects a field value of `undefined` anywhere in a
+ * document - including nested inside arrays/objects. Our optional
+ * fields (description, totalTimeMinutes, servings, source, and each
+ * ingredient's amount/unit) come back as `undefined` from the form
+ * when left blank, which the Zod schema is fine with but Firestore
+ * is not. Round-tripping through JSON converts those to `null`,
+ * which Firestore accepts - and which `updateDoc` will use to
+ * properly clear a previously-set value rather than leaving it
+ * unchanged.
+ */
+export function toFirestorePayload(input: RecipeInput): Record<string, unknown> {
+  return JSON.parse(JSON.stringify(input, (_key, value) => (value === undefined ? null : value)))
+}
+
 export async function addRecipe(input: RecipeInput): Promise<string> {
   const ref = await addDoc(recipesRef, {
-    ...input,
+    ...toFirestorePayload(input),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   })
@@ -80,7 +95,7 @@ export async function addRecipe(input: RecipeInput): Promise<string> {
 
 export async function updateRecipe(id: string, input: RecipeInput): Promise<void> {
   await updateDoc(doc(db, 'recipes', id), {
-    ...input,
+    ...toFirestorePayload(input),
     updatedAt: serverTimestamp(),
   })
 }
