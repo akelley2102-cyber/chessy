@@ -339,27 +339,32 @@ function RecipeForm({ recipeId, initialRecipe }: RecipeFormProps) {
           <div className="space-y-2">
             {form.ingredients.map((ingredient, index) => (
               <div key={ingredient.id} className="flex gap-2">
-                <Input
-                  value={ingredient.amount ?? ''}
-                  onChange={(e) => updateIngredient(ingredient.id, { amount: e.target.value })}
-                  placeholder="2"
-                  aria-label={`Ingredient ${index + 1} amount`}
-                  className="w-16 font-mono"
-                />
-                <Input
-                  value={ingredient.unit ?? ''}
-                  onChange={(e) => updateIngredient(ingredient.id, { unit: e.target.value })}
-                  placeholder="cup"
-                  aria-label={`Ingredient ${index + 1} unit`}
-                  className="w-20 font-mono"
-                />
-                <Input
-                  value={ingredient.name}
-                  onChange={(e) => updateIngredient(ingredient.id, { name: e.target.value })}
-                  placeholder="all-purpose flour"
-                  aria-label={`Ingredient ${index + 1} name`}
-                  className="flex-1"
-                />
+                <div className="w-16">
+                  <Input
+                    value={ingredient.amount ?? ''}
+                    onChange={(e) => updateIngredient(ingredient.id, { amount: e.target.value })}
+                    placeholder="2"
+                    aria-label={`Ingredient ${index + 1} amount`}
+                    className="font-mono"
+                  />
+                </div>
+                <div className="w-20">
+                  <Input
+                    value={ingredient.unit ?? ''}
+                    onChange={(e) => updateIngredient(ingredient.id, { unit: e.target.value })}
+                    placeholder="cup"
+                    aria-label={`Ingredient ${index + 1} unit`}
+                    className="font-mono"
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <Input
+                    value={ingredient.name}
+                    onChange={(e) => updateIngredient(ingredient.id, { name: e.target.value })}
+                    placeholder="all-purpose flour"
+                    aria-label={`Ingredient ${index + 1} name`}
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={() => removeIngredient(ingredient.id)}
@@ -395,14 +400,15 @@ function RecipeForm({ recipeId, initialRecipe }: RecipeFormProps) {
                 <span className="flex h-9 w-7 shrink-0 items-center justify-center font-mono text-sm font-bold text-pencil">
                   {index + 1}.
                 </span>
-                <Textarea
-                  value={step.text}
-                  onChange={(e) => updateStep(step.id, e.target.value)}
-                  placeholder="Preheat the oven to 425°F…"
-                  rows={2}
-                  aria-label={`Step ${index + 1}`}
-                  className="flex-1"
-                />
+                <div className="min-w-0 flex-1">
+                  <Textarea
+                    value={step.text}
+                    onChange={(e) => updateStep(step.id, e.target.value)}
+                    placeholder="Preheat the oven to 425°F…"
+                    rows={2}
+                    aria-label={`Step ${index + 1}`}
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={() => removeStep(step.id)}
