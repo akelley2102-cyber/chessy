@@ -9,6 +9,9 @@ const RecipesPage = lazy(() =>
 const RecipeFormPage = lazy(() =>
   import('@/pages/RecipeFormPage').then((m) => ({ default: m.RecipeFormPage }))
 )
+const RecipeImportPage = lazy(() =>
+  import('@/pages/RecipeImportPage').then((m) => ({ default: m.RecipeImportPage }))
+)
 const RecipeDetailPage = lazy(() =>
   import('@/pages/RecipeDetailPage').then((m) => ({ default: m.RecipeDetailPage }))
 )
@@ -36,6 +39,7 @@ function App() {
           <Route index element={<TodayPage />} />
           <Route path="recipes" element={<RecipesPage />} />
           <Route path="recipes/new" element={<RecipeFormPage />} />
+          <Route path="recipes/import" element={<RecipeImportPage />} />
           <Route path="recipes/:id" element={<RecipeDetailPage />} />
           <Route path="recipes/:id/edit" element={<RecipeFormPage />} />
           <Route path="plan" element={<PlanPage />} />
