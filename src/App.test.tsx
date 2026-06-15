@@ -1,15 +1,23 @@
-import { ChessyBubble, SectionLabel, RecipeCard } from '@/components/ui'
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import App from './App'
 
-export function DigestPage() {
-  return (
-    <div className="pt-2">
-      <SectionLabel>Morning Digest</SectionLabel>
-      <RecipeCard accent="tomato">
-        <ChessyBubble>
-          I'm not reading the school inbox yet. Once that's connected, this is where each morning's
-          summary will land — lunches, events, and tonight's dinner plan.
-        </ChessyBubble>
-      </RecipeCard>
-    </div>
-  )
-}
+describe('App', () => {
+  it('renders the Chessy header and bottom nav', () => {
+    render(<App />)
+
+    expect(screen.getByText('Chessy')).toBeInTheDocument()
+    expect(screen.getByText('Your home, handled.')).toBeInTheDocument()
+
+    const nav = screen.getByRole('navigation', { name: 'Primary' })
+    expect(nav).toBeInTheDocument()
+    expect(screen.getAllByRole('link')).toHaveLength(6)
+  })
+
+  it('shows the Today empty state by default', () => {
+    render(<App />)
+
+    expect(screen.getByRole('heading', { name: 'Today' })).toBeInTheDocument()
+    expect(screen.getByText(/Nothing on today's agenda yet/i)).toBeInTheDocument()
+  })
+})

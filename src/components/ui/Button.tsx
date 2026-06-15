@@ -14,12 +14,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   danger: 'bg-tomato text-white hover:opacity-90',
 }
 
-export function Button({
-  variant = 'primary',
-  className = '',
-  children,
-  ...props
-}: ButtonProps) {
+export function Button({ variant = 'primary', className = '', children, ...props }: ButtonProps) {
   return (
     <button
       className={[

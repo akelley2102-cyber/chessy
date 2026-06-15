@@ -1,32 +1,41 @@
-import type { ComponentType, ReactNode } from 'react'
+import { NavLink } from 'react-router-dom'
+import { Home, ChefHat, CalendarDays, ShoppingCart, Package, Mail } from 'lucide-react'
 
-export type BadgeTone = 'pick' | 'inStock' | 'lowStock' | 'thisWeek' | 'neutral'
+const navItems = [
+  { to: '/', label: 'Today', icon: Home },
+  { to: '/recipes', label: 'Recipes', icon: ChefHat },
+  { to: '/plan', label: 'Plan', icon: CalendarDays },
+  { to: '/list', label: 'List', icon: ShoppingCart },
+  { to: '/pantry', label: 'Pantry', icon: Package },
+  { to: '/digest', label: 'Digest', icon: Mail },
+]
 
-interface BadgeProps {
-  icon?: ComponentType<{ size?: number; className?: string }>
-  children: ReactNode
-  tone?: BadgeTone
-}
-
-const toneClasses: Record<BadgeTone, string> = {
-  pick: 'bg-mustard text-ink',
-  inStock: 'bg-pesto text-white',
-  lowStock: 'bg-tomato text-white',
-  thisWeek: 'bg-enamel-light text-white',
-  neutral: 'bg-card text-pencil border border-rule',
-}
-
-export function Badge({ icon: Icon, children, tone = 'neutral' }: BadgeProps) {
+export function BottomNav() {
   return (
-    <span
-      className={[
-        'inline-flex items-center gap-1 rounded px-2 py-1',
-        'text-xs font-bold uppercase tracking-wide font-mono',
-        toneClasses[tone],
-      ].join(' ')}
+    <nav
+      className="fixed inset-x-0 bottom-0 z-10 border-t border-rule bg-enamel pb-[env(safe-area-inset-bottom)]"
+      aria-label="Primary"
     >
-      {Icon && <Icon size={12} />}
-      {children}
-    </span>
+      <ul className="mx-auto flex max-w-md justify-between px-1 py-1">
+        {navItems.map(({ to, label, icon: Icon }) => (
+          <li key={to} className="flex-1">
+            <NavLink
+              to={to}
+              end={to === '/'}
+              className={({ isActive }) =>
+                [
+                  'flex flex-col items-center gap-1 rounded px-1 py-1.5 text-[10px] font-body',
+                  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mustard',
+                  isActive ? 'text-mustard' : 'text-white/85 hover:text-white',
+                ].join(' ')
+              }
+            >
+              <Icon size={18} aria-hidden="true" />
+              {label}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </nav>
   )
 }

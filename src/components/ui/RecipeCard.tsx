@@ -1,33 +1,37 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant
+interface RecipeCardProps {
   children: ReactNode
+  /** Top accent rule color - defaults to tomato (the signature recipe-card stripe) */
+  accent?: 'tomato' | 'enamel' | 'mustard' | 'pesto'
+  className?: string
 }
 
-const variantClasses: Record<ButtonVariant, string> = {
-  primary: 'bg-enamel text-white hover:bg-enamel-light',
-  secondary: 'bg-pesto text-white hover:opacity-90',
-  ghost: 'bg-transparent text-enamel border border-enamel hover:bg-card',
-  danger: 'bg-tomato text-white hover:opacity-90',
+const accentClasses = {
+  tomato: 'bg-tomato',
+  enamel: 'bg-enamel',
+  mustard: 'bg-mustard',
+  pesto: 'bg-pesto',
 }
 
-export function Button({ variant = 'primary', className = '', children, ...props }: ButtonProps) {
+/**
+ * The signature Chessy component. Every module (recipes, pantry,
+ * grocery list, daily digest) is built from this card: index-card
+ * surface, faint ruled-paper lines, and a colored top rule like a
+ * recipe box divider.
+ */
+export function RecipeCard({ children, accent = 'tomato', className = '' }: RecipeCardProps) {
   return (
-    <button
-      className={[
-        'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2',
-        'text-sm font-bold font-body transition-colors',
-        'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-enamel',
-        'disabled:opacity-50 disabled:cursor-not-allowed',
-        variantClasses[variant],
-        className,
-      ].join(' ')}
-      {...props}
+    <div
+      className={`overflow-hidden rounded-lg bg-card shadow-sm ${className}`}
+      style={{
+        backgroundImage:
+          'repeating-linear-gradient(var(--color-rule) 0px, var(--color-rule) 1px, transparent 1px, transparent 28px)',
+        backgroundPosition: '0 24px',
+      }}
     >
-      {children}
-    </button>
+      <div className={`h-1 ${accentClasses[accent]}`} aria-hidden="true" />
+      <div className="p-4">{children}</div>
+    </div>
   )
 }
