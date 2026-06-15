@@ -1,6 +1,16 @@
+import { Suspense } from 'react'
 import { ChefHat } from 'lucide-react'
 import { Outlet } from 'react-router-dom'
+import { ChessyBubble } from '@/components/ui'
 import { BottomNav } from './BottomNav'
+
+function PageFallback() {
+  return (
+    <div className="pt-2">
+      <ChessyBubble>One moment…</ChessyBubble>
+    </div>
+  )
+}
 
 export function AppShell() {
   return (
@@ -21,7 +31,9 @@ export function AppShell() {
       </header>
 
       <main className="flex-1 px-4 pb-24">
-        <Outlet />
+        <Suspense fallback={<PageFallback />}>
+          <Outlet />
+        </Suspense>
       </main>
 
       <BottomNav />
