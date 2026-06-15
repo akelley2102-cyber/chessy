@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, Search, Sparkles, Clock, Users } from 'lucide-react'
+import { Plus, ClipboardPaste, Search, Sparkles, Clock, Users } from 'lucide-react'
 import { ChessyBubble, SectionLabel, RecipeCard, Button, Badge, Input } from '@/components/ui'
 import { useRecipes } from '@/hooks/useRecipes'
 
@@ -21,12 +21,20 @@ export function RecipesPage() {
     <div className="pt-2">
       <div className="mb-3 flex items-center justify-between gap-2">
         <SectionLabel>Recipe Box</SectionLabel>
-        <Link to="/recipes/new">
-          <Button variant="primary">
-            <Plus size={16} />
-            Add recipe
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link to="/recipes/import">
+            <Button variant="ghost">
+              <ClipboardPaste size={16} />
+              Paste
+            </Button>
+          </Link>
+          <Link to="/recipes/new">
+            <Button variant="primary">
+              <Plus size={16} />
+              Add
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {loading && (
@@ -46,8 +54,8 @@ export function RecipesPage() {
       {!loading && !error && recipes.length === 0 && (
         <RecipeCard accent="tomato">
           <ChessyBubble>
-            Your recipe box is empty. Send me a recipe you love — paste the ingredients and steps,
-            or a link — and I&rsquo;ll keep it filed here.
+            Your recipe box is empty. Tap &ldquo;Paste&rdquo; above to bring in a recipe with
+            Claude&rsquo;s help, or &ldquo;Add&rdquo; to type one in yourself.
           </ChessyBubble>
         </RecipeCard>
       )}
